@@ -14,8 +14,7 @@ datasource db {
 }
 
 model Client {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String   @id @default(cuid()) @unique
   name      String?
   demand    Int
   custValue Int
@@ -25,7 +24,7 @@ model Client {
 }
 
 model Location {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @unique
   name      String?
   fixedCost   Int
   capacity    Int

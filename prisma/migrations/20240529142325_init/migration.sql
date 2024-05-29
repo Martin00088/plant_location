@@ -1,7 +1,6 @@
 -- CreateTable
 CREATE TABLE "Client" (
     "id" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
     "name" TEXT,
     "demand" INTEGER NOT NULL,
     "custValue" INTEGER NOT NULL,
@@ -25,7 +24,10 @@ CREATE TABLE "Location" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Client_email_key" ON "Client"("email");
+CREATE UNIQUE INDEX "Client_id_key" ON "Client"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Location_id_key" ON "Location"("id");
 
 -- AddForeignKey
 ALTER TABLE "Location" ADD CONSTRAINT "Location_ClientId_fkey" FOREIGN KEY ("ClientId") REFERENCES "Client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
