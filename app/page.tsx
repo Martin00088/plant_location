@@ -2,6 +2,18 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const [client, setClient] = useState([
@@ -22,6 +34,26 @@ export default function Home() {
       name: "Client 3",
       demand: 300,
       cost: 30,
+    },
+  ]);
+  const [location, setLocation] = useState([
+    {
+      id: 1,
+      numero: "Planta 1",
+      cost: 100,
+      capacity: 10,
+    },
+    {
+      id: 2,
+      numero: "Planta 2",
+      cost: 100,
+      capacity: 10,
+    },
+    {
+      id: 3,
+      numero: "Planta 3",
+      cost: 100,
+      capacity: 10,
     },
   ]);
 
@@ -49,32 +81,112 @@ export default function Home() {
           hay una demanda y un costo de transporte con respecto a cada ubicación
           de la planta.
         </p>
-        <h1 className="text-4xl font-bold">Clientes</h1>
-        {
-          <table className="table-auto mt-4">
-            <thead>
-              <tr>
-                <th className="px-4 py-2">Client</th>
-                <th className="px-4 py-2">Demand</th>
-                <th className="px-4 py-2">Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {client.map((c) => (
-                <tr key={c.id}>
-                  <Link
-                    href={`location/${c.id}`}
-                    className="hover:bg-slate-600"
-                  >
-                    <td className="border px-4 py-2">{c.name}</td>
-                  </Link>
-                  <td className="border px-4 py-2">{c.demand}</td>
-                  <td className="border px-4 py-2">{c.cost}</td>
+
+        <Tabs defaultValue="locations" className="w-[400px]">
+          <TabsList>
+            <TabsTrigger value="locations">Plantas</TabsTrigger>
+            <TabsTrigger value="clients">Clientes</TabsTrigger>
+          </TabsList>
+          <TabsContent value="locations">
+            <table className="table-auto mt-4">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Numero</th>
+                  <th className="px-4 py-2">Costo Fijo</th>
+                  <th className="px-4 py-2">Capacidad</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        }
+              </thead>
+              <tbody>
+                {location.map((c) => (
+                  <tr key={c.id}>
+                    <td className="border px-4 py-2">{c.numero}</td>
+                    <td className="border px-4 py-2">{c.capacity}</td>
+                    <td className="border px-4 py-2">{c.cost}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Agregar Planta</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Agregar Planta</DialogTitle>
+                  <DialogDescription>
+                    Complete la informacion requerida para añadir una nueva
+                    planta.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Input
+                      id="fixedCost"
+                      placeholder="Ingrese el costo fijo..."
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Input
+                      id="capacity"
+                      placeholder="Ingrese la capacidad..."
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Agregar</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </TabsContent>
+          <TabsContent value="clients">
+            <table className="table-auto mt-4">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Numero</th>
+                  <th className="px-4 py-2">Demanda</th>
+                  <th className="px-4 py-2">Plantas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {client.map((c) => (
+                  <tr key={c.id}>
+                    <td className="border px-4 py-2">{c.name}</td>
+                    <td className="border px-4 py-2">{c.demand}</td>
+                    <td className="border px-4 py-2 hover:underline">
+                      <Link href={`location/${c.id}`}>Administrar</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Agregar Cliente</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Agregar Cliente</DialogTitle>
+                  <DialogDescription>
+                    Complete la informacion requerida para añadir un nuevo
+                    cliente.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="py-4 items-center ">
+                  <Input
+                    id="demand"
+                    placeholder="Ingrese la demanda..."
+                    className=""
+                  />
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Continuar</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </TabsContent>
+        </Tabs>
       </div>
     </MaxWidthWrapper>
   );
