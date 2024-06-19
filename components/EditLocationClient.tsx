@@ -16,11 +16,11 @@ import { useForm } from "react-hook-form";
 
 const EditLocationClient = ({
   id,
-  name,
+  numero,
   cost,
 }: {
   id: number;
-  name: string;
+  numero: string;
   cost: number;
 }) => {
   const router = useRouter();
@@ -34,9 +34,6 @@ const EditLocationClient = ({
 
   const onSubmit = (data: any) => {
     console.log(data);
-    console.log(name);
-    console.log(cost);
-    console.log(id);
     alert("Costo cambiado");
   };
 
@@ -49,7 +46,7 @@ const EditLocationClient = ({
         <DialogHeader>
           <DialogTitle>Cambiar Costo</DialogTitle>
           <DialogDescription>
-            Ingrese el nuevo costo para la planta {name}.
+            Ingrese el nuevo costo para la {numero}.
           </DialogDescription>
         </DialogHeader>
         <div className="py-2 items-center ">
@@ -58,6 +55,7 @@ const EditLocationClient = ({
               id="cost"
               {...register("cost", { required: true })}
               placeholder="Ingrese el costo..."
+              type="number"
               className="mb-2"
             />
             <DialogFooter>

@@ -31,9 +31,11 @@ const AddClient = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Agregar Cliente</Button>
-      </DialogTrigger>
+      <div className="flex justify-end">
+        <DialogTrigger asChild>
+          <Button>Agregar Cliente</Button>
+        </DialogTrigger>
+      </div>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Agregar Cliente</DialogTitle>
@@ -48,6 +50,7 @@ const AddClient = () => {
               {...register("demand", { required: true })}
               placeholder="Ingrese la demanda..."
               className="mb-2"
+              type="number"
             />
             <DialogFooter>
               <Button type="submit">Continuar</Button>

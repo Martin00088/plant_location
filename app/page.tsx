@@ -28,49 +28,10 @@ import {
 } from "@/components/ui/table";
 import AddClient from "@/components/AddClient";
 import AddLocation from "@/components/AddLocation";
+import { Clients } from "@/db/staticFiles";
+import { Locations } from "@/db/staticFiles";
 
 export default function Home() {
-  const [client, setClient] = useState([
-    {
-      id: 1,
-      name: "Client 1",
-      demand: 100,
-      cost: 10,
-    },
-    {
-      id: 2,
-      name: "Client 2",
-      demand: 200,
-      cost: 20,
-    },
-    {
-      id: 3,
-      name: "Client 3",
-      demand: 300,
-      cost: 30,
-    },
-  ]);
-  const [location, setLocation] = useState([
-    {
-      id: 1,
-      numero: "Planta 1",
-      cost: 100,
-      capacity: 10,
-    },
-    {
-      id: 2,
-      numero: "Planta 2",
-      cost: 100,
-      capacity: 10,
-    },
-    {
-      id: 3,
-      numero: "Planta 3",
-      cost: 100,
-      capacity: 10,
-    },
-  ]);
-
   // useEffect(() => {
   //   async function fetchClient() {
   //     const res = await fetch("/api/client");
@@ -115,7 +76,7 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {location.map((location) => (
+                {Locations.map((location) => (
                   <TableRow key={location.id}>
                     <TableCell>{location.numero}</TableCell>
                     <TableCell>{location.cost}</TableCell>
@@ -137,17 +98,14 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {client.map((client) => (
+                {Clients.map((client) => (
                   <TableRow key={client.id}>
-                    <TableCell>{client.id}</TableCell>
+                    <TableCell>{client.name}</TableCell>
                     <TableCell>{client.demand}</TableCell>
                     <TableCell>
-                      <Link
-                        href={`/location/${client.id}`}
-                        className="hover:bg-gray-200 p-2 rounded-md"
-                      >
-                        Administrar
-                      </Link>
+                      <Button variant="outline">
+                        <Link href={`/location/${client.id}`}>Administrar</Link>
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
