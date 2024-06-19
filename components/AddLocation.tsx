@@ -28,9 +28,11 @@ const AddLocation = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Agregar Planta</Button>
-      </DialogTrigger>
+      <div className="flex justify-end">
+        <DialogTrigger asChild>
+          <Button>Agregar Planta</Button>
+        </DialogTrigger>
+      </div>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Agregar Planta</DialogTitle>
@@ -42,12 +44,14 @@ const AddLocation = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
               id="fixedCost"
+              type="number"
               placeholder="Ingrese el costo fijo..."
               className="mb-2"
               {...register("cost", { required: true })}
             />
             <Input
               id="capacity"
+              type="number"
               placeholder="Ingrese la capacidad..."
               {...register("capacity")}
             />

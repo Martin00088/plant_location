@@ -10,32 +10,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { use, useEffect, useState } from "react";
+import { Clients } from "@/db/staticFiles";
 
 type PageProps = {
   params: {
-    clientId: string;
+    clientId: number;
   };
 };
 
 export default function Page({ params }: PageProps) {
-  const [location, setLocation] = useState([
-    {
-      id: 1,
-      name: "Location 1",
-      cost: 10,
-    },
-    {
-      id: 2,
-      name: "Location 2",
-      cost: 20,
-    },
-    {
-      id: 3,
-      name: "Location 3",
-      cost: 0,
-    },
-  ]);
   return (
     <MaxWidthWrapper>
       <div className="my-2">
@@ -53,19 +36,23 @@ export default function Page({ params }: PageProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {location.map((location) => (
-              <TableRow key={location.id}>
-                <TableCell>{location.name}</TableCell>
-                <TableCell>{location.cost}</TableCell>
-                <TableCell>
-                  <EditLocationClient
-                    id={location.id}
-                    cost={location.cost}
-                    name={location.name}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            {Clients.map((client) => {
+              if (client.id == params.clientId) {
+                return client.locations.map((location) => (
+                  <TableRow key={location.id}>
+                    <TableCell>{location.numero}</TableCell>
+                    <TableCell>{location.cost}</TableCell>
+                    <TableCell>
+                      <EditLocationClient
+                        id={location.id}
+                        cost={location.cost}
+                        name={location.numero}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ));
+              }
+            })}
           </TableBody>
         </Table>
       </div>

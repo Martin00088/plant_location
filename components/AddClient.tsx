@@ -31,9 +31,11 @@ const AddClient = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Agregar Cliente</Button>
-      </DialogTrigger>
+      <div className="flex justify-end">
+        <DialogTrigger asChild>
+          <Button>Agregar Cliente</Button>
+        </DialogTrigger>
+      </div>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Agregar Cliente</DialogTitle>
@@ -45,6 +47,7 @@ const AddClient = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
               id="demand"
+              type="number"
               {...register("demand", { required: true })}
               placeholder="Ingrese la demanda..."
               className="mb-2"

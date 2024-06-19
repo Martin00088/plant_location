@@ -34,9 +34,6 @@ const EditLocationClient = ({
 
   const onSubmit = (data: any) => {
     console.log(data);
-    console.log(name);
-    console.log(cost);
-    console.log(id);
     alert("Costo cambiado");
   };
 
@@ -56,6 +53,7 @@ const EditLocationClient = ({
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
               id="cost"
+              type="number"
               {...register("cost", { required: true })}
               placeholder="Ingrese el costo..."
               className="mb-2"
