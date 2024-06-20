@@ -1,0 +1,62 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Input } from "./ui/input";
+
+const Resolve = () => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    alert("Problema Resuelto");
+  };
+
+  return (
+    <Dialog>
+      <div className="flex justify-start my-4">
+        <DialogTrigger asChild>
+          <Button>Resolver Problema</Button>
+        </DialogTrigger>
+      </div>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Agregar un Nombre a tu problema</DialogTitle>
+          <DialogDescription>
+            Complete la informacion requerida para resolver un problema.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="py-2 items-center ">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              id="name"
+              placeholder="Ingrese el Nombre"
+              {...register("Name", { required: true })}
+            />
+            <DialogFooter>
+              <Button type="submit" className="m-2">
+                Resolver
+              </Button>
+            </DialogFooter>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default Resolve;

@@ -1,26 +1,11 @@
 "use client";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-
-import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -28,17 +13,22 @@ import {
 } from "@/components/ui/table";
 import AddClient from "@/components/AddClient";
 import AddLocation from "@/components/AddLocation";
-import { Clients, Locations } from "@/db/staticFiles";
+import { Clients, Locations, Results } from "@/db/staticFiles";
+import Resolve from "@/components/Resolve";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  // useEffect(() => {
-  //   async function fetchClient() {
-  //     const res = await fetch("/api/client");
-  //     const { clients } = await res.json();
-  //     setClient(clients);
-  //   }
-  //   fetchClient();
-  // }, []);
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    async function fetchClient() {
+      const res = await fetch("/api/location");
+      const { locations } = await res.json();
+      setLocations(locations);
+    }
+
+    fetchClient();
+  }, []);
 
   return (
     <MaxWidthWrapper className="">
@@ -64,6 +54,9 @@ export default function Home() {
             <TabsTrigger value="clients" className="w-1/2">
               Clientes
             </TabsTrigger>
+            <TabsTrigger value="results" className="w-1/2">
+              Resultados
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="locations">
             <Table>
@@ -75,11 +68,12 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Locations.map((location) => (
+                {locations.map((location) => (
                   <TableRow key={location.id}>
-                    <TableCell>{location.numero}</TableCell>
-                    <TableCell>{location.cost}</TableCell>
+                    <TableCell>{location.id}</TableCell>
+                    <TableCell>{location.fixedCost}</TableCell>
                     <TableCell>{location.capacity}</TableCell>
+                    <TableCell>Delete</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -106,12 +100,44 @@ export default function Home() {
                         <Link href={`/location/${client.id}`}>Administrar</Link>
                       </Button>
                     </TableCell>
+                    <TableCell>Delete</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
             {/* Agrega un nuevo cliente */}
             <AddClient />
+          </TabsContent>
+          <TabsContent value="results">
+            <Resolve />
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Resultado</TableHead>
+                  <TableHead>Estado de la Solucion</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Results.map((result) => (
+                  <TableRow key={result.id}>
+                    <TableCell>{result.name}</TableCell>
+                    <TableCell>{result.result}</TableCell>
+                    <TableCell>{result.statusSolution}</TableCell>
+                    <TableCell>{result.createdAt}</TableCell>
+                    <TableCell>
+                      <Link
+                        key={result.id}
+                        href={`/results/${result.id}`}
+                        className="hover:cursor-pointer"
+                      >
+                        Ver Detalles
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </TabsContent>
         </Tabs>
       </div>

@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const AddLocation = () => {
   const {
@@ -21,9 +22,15 @@ const AddLocation = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
-    alert("Planta agregada");
+    const response = await fetch("/api/location", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   return (
@@ -53,11 +60,11 @@ const AddLocation = () => {
               id="capacity"
               type="number"
               placeholder="Ingrese la capacidad..."
-              {...register("capacity")}
+              {...register("capacity", { required: true })}
             />
-            <DialogFooter>
+            <DialogClose>
               <Button type="submit">Agregar</Button>
-            </DialogFooter>
+            </DialogClose>
           </form>
         </div>
       </DialogContent>
