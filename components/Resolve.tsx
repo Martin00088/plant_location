@@ -21,9 +21,14 @@ const Resolve = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    alert("Problema Resuelto");
+  const onSubmit = async (data: any) => {
+		const response = await fetch("/api/results", {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
   };
 
   return (
@@ -45,7 +50,7 @@ const Resolve = () => {
             <Input
               id="name"
               placeholder="Ingrese el Nombre"
-              {...register("Name", { required: true })}
+              {...register("name", { required: true })}
             />
             <DialogFooter>
               <Button type="submit" className="m-2">

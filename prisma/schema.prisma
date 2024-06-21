@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:.prisma/client.db"
 }
 
 model Client {
@@ -43,8 +43,7 @@ model LocationClient {
 
 model Results {
   id       String   @id @default(cuid()) @unique
-  name    String?
-  result Float
+  name    String
   solutionData String
   inputdata String
   console String

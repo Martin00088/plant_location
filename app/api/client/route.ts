@@ -11,29 +11,29 @@ export async function GET(request: Request, response: Response) {
 }
 
 export async function POST(request: Request, response: Response) {
-  try {
-    const { name, demand, custValue } = await request.json();
+	try {
+		const { name, demand, custValue } = await request.json();
 
-    const client = await prisma.client.create({
-      data: { name, demand, custValue },
-    });
+		const client = await prisma.client.create({
+			data: { name, demand, custValue },
+		});
 
-    const location = await prisma.location.findMany();
+		const location = await prisma.location.findMany();
 
-    location.map(async (location) => {
-      await prisma.locationClient.create({
-        data: {
-          clientId: client.id,
-          locationId: location.id,
-          cost: 0,
-        },
-      });
-    });
+		location.map(async (location: LocationA) => {
+			await prisma.locationClient.create({
+				data: {
+					clientId: client.id,
+					locationId: location.id,
+					cost: 0,
+				},
+			});
+		});
 
-    return NextResponse.json({ client });
-  } catch (error) {
-    return NextResponse.json({ error: error });
-  }
+		return NextResponse.json({ client });
+	} catch (error) {
+		return NextResponse.json({ error });
+	}
 }
 
 export async function PUT(request: Request, response: Response) {

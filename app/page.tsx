@@ -13,22 +13,50 @@ import {
 } from "@/components/ui/table";
 import AddClient from "@/components/AddClient";
 import AddLocation from "@/components/AddLocation";
-import { Clients, Locations, Results } from "@/db/staticFiles";
 import Resolve from "@/components/Resolve";
 import { useEffect, useState } from "react";
 
+function deleteResult(id: string, setResults: any) {
+	return async () => {
+		const response = await fetch("/api/results/" + id, {
+			method: "DELETE",
+		});
+
+		if (response.ok) {
+			const newResults = await fetch("/api/results")
+				.then(res => res.json())
+				.then(data => data.results)
+				.catch(console.error);
+			setResults(newResults);
+		}
+	};
+}
+
 export default function Home() {
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState<LocationA[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [results, setResults] = useState<Result[]>([]);
 
-  useEffect(() => {
-    async function fetchClient() {
-      const res = await fetch("/api/location");
-      const { locations } = await res.json();
-      setLocations(locations);
-    }
+	useEffect(() => {
+		fetch("/api/location")
+			.then(res => res.json())
+			.then(data => setLocations(data.locations))
+			.catch(console.error);
+  	}, []);
+	
+	useEffect(() => {
+		fetch("/api/client")
+			.then(res => res.json())
+			.then(data => setClients(data.clients))
+			.catch(console.error);
+  	}, []);
 
-    fetchClient();
-  }, []);
+	useEffect(() => {
+		fetch("/api/results")
+			.then(res => res.json())
+			.then(data => setResults(data.results))
+			.catch(console.error);
+  	}, []);
 
   return (
     <MaxWidthWrapper className="">
@@ -91,7 +119,7 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Clients.map((client) => (
+                {clients.map((client) => (
                   <TableRow key={client.id}>
                     <TableCell>{client.id}</TableCell>
                     <TableCell>{client.demand}</TableCell>
@@ -119,21 +147,26 @@ export default function Home() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {Results.map((result) => (
+                {results.map((result) => (
                   <TableRow key={result.id}>
                     <TableCell>{result.name}</TableCell>
-                    <TableCell>{result.result}</TableCell>
+                    <TableCell>{JSON.parse(result.solutionData).solutionValues[0].obj}</TableCell>
                     <TableCell>{result.statusSolution}</TableCell>
-                    <TableCell>{result.createdAt}</TableCell>
+                    <TableCell>{new Date(result.createdAt).toLocaleString()}</TableCell>
                     <TableCell>
                       <Link
                         key={result.id}
                         href={`/results/${result.id}`}
                         className="hover:cursor-pointer"
                       >
-                        Ver Detalles
+                        <Button>Ver Detalles</Button>
                       </Link>
                     </TableCell>
+                    <TableCell>
+						<Button onClick={deleteResult(result.id, setResults)}>
+						Delete
+						</Button>
+					</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
