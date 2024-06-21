@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/db/prisma";
+import { Location } from "@prisma/client";
 
 export async function GET(request: Request, response: Response) {
   try {
@@ -20,7 +21,7 @@ export async function POST(request: Request, response: Response) {
 
 		const location = await prisma.location.findMany();
 
-		location.map(async (location: LocationA) => {
+		location.map(async (location: Location) => {
 			await prisma.locationClient.create({
 				data: {
 					clientId: client.id,
