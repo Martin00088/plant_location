@@ -152,7 +152,7 @@ export default function Home() {
                     <TableCell>{result.name}</TableCell>
                     <TableCell>{JSON.parse(result.solutionData).solutionValues[0].obj}</TableCell>
                     <TableCell>{result.statusSolution}</TableCell>
-                    <TableCell>{result.createdAt.toLocaleString()}</TableCell>
+                    <TableCell>{new Date(result.createdAt).toLocaleString()}</TableCell>
                     <TableCell>
                       <Link
                         key={result.id}
