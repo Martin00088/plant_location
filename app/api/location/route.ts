@@ -17,6 +17,18 @@ export async function POST(request: Request) {
     const location = await prisma.location.create({
       data: { fixedCost: Number(cost), capacity: Number(capacity) },
     });
+
+	const clients = await prisma.client.findMany();
+	for(const client of clients) {
+		await prisma.locationClient.create({
+			data: {
+				clientId: client.id,
+				locationId: location.id,
+				cost: 0,
+			},
+		});
+	}
+
     return NextResponse.json({ location });
   } catch (error) {
     return NextResponse.json({ error: error });

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -53,9 +54,11 @@ const Resolve = () => {
               {...register("name", { required: true })}
             />
             <DialogFooter>
-              <Button type="submit" className="m-2">
-                Resolver
-              </Button>
+				<DialogClose>
+					<Button type="submit" className="m-2">
+						Resolver
+					</Button>
+				</DialogClose>
             </DialogFooter>
           </form>
         </div>

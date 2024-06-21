@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
+import { Results } from "@prisma/client";
 
 
 export async function GET(request: NextRequest, { params }: { params: { resultId: string } }) {
 	try {
-		const locations = await prisma.results.findUniqueOrThrow({
-			where: { id: params.resultId },
+		const results = await prisma.results.findUniqueOrThrow({
+			where: { id: Number(params.resultId) },
 		})
-	  return NextResponse.json({ locations });
+	  return NextResponse.json({ results });
 	} catch (error) {
 	  return NextResponse.json({ error });
 	}
